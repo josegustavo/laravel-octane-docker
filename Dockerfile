@@ -290,7 +290,7 @@ RUN apt-get clean \
     && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* \
     && rm /var/log/lastlog /var/log/faillog
 
-COPY . .
+COPY deployment /deployment
 COPY --from=vendor ${ROOT}/vendor vendor
 
 RUN mkdir -p \
@@ -306,11 +306,11 @@ COPY deployment/octane/supervisord* /etc/supervisor/conf.d/
 COPY deployment/octane/php.ini /usr/local/etc/php/conf.d/octane.ini
 COPY deployment/octane/opcache.ini /usr/local/etc/php/conf.d/opcache.ini
 
-RUN chmod +x deployment/octane/entrypoint.sh
+RUN chmod +x /deployment/octane/entrypoint.sh
 RUN cat deployment/octane/utilities.sh >> ~/.bashrc
 
 EXPOSE 9000
 
-ENTRYPOINT ["deployment/octane/entrypoint.sh"]
+ENTRYPOINT ["/deployment/octane/entrypoint.sh"]
 
 HEALTHCHECK --start-period=5s --interval=2s --timeout=5s --retries=8 CMD php artisan octane:status || exit 1
