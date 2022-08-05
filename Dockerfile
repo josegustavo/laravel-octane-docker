@@ -290,7 +290,7 @@ RUN apt-get clean \
     && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* \
     && rm /var/log/lastlog /var/log/faillog
 
-COPY deployment/octane/entrypoint.sh /deployment/octane/entrypoint.sh
+COPY deployment/octane/*.sh /deployment/octane/
 COPY --from=vendor ${ROOT}/vendor vendor
 
 RUN mkdir -p \
@@ -307,7 +307,7 @@ COPY deployment/octane/php.ini /usr/local/etc/php/conf.d/octane.ini
 COPY deployment/octane/opcache.ini /usr/local/etc/php/conf.d/opcache.ini
 
 RUN chmod +x /deployment/octane/entrypoint.sh
-RUN cat deployment/octane/utilities.sh >> ~/.bashrc
+RUN cat /deployment/octane/utilities.sh >> ~/.bashrc
 
 EXPOSE 9000
 
