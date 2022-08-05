@@ -83,6 +83,16 @@ RUN apt-get update; \
           libzstd1 \
           procps
 
+
+###########################################
+# mongodb
+###########################################
+ARG INSTALL_MONGODB=true
+
+RUN if [ ${INSTALL_MONGODB} = true ]; then \
+      apt-get install -yqq --no-install-recommends --show-progress php-mongodb; \
+  fi
+
 ###########################################
 # pdo_mysql
 ###########################################
