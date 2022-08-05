@@ -290,7 +290,7 @@ RUN apt-get clean \
     && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* \
     && rm /var/log/lastlog /var/log/faillog
 
-COPY deployment /deployment
+COPY deployment/octane/entrypoint.sh /deployment/octane/entrypoint.sh
 COPY --from=vendor ${ROOT}/vendor vendor
 
 RUN mkdir -p \
