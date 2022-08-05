@@ -90,7 +90,9 @@ RUN apt-get update; \
 ARG INSTALL_MONGODB=true
 
 RUN if [ ${INSTALL_MONGODB} = true ]; then \
-      apt-get install -yqq --no-install-recommends --show-progress php-mongodb; \
+      apt-get install -yqq --no-install-recommends --show-progress autoconf pkg-config \
+      && pecl install mongodb \
+      && docker-php-ext-enable mongodb; \
   fi
 
 ###########################################
