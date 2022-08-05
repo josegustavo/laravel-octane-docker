@@ -99,7 +99,11 @@ RUN if [ ${INSTALL_MONGODB} = true ]; then \
 # pdo_mysql
 ###########################################
 
-RUN docker-php-ext-install pdo_mysql;
+ARG INSTALL_MYSQL=false
+
+RUN if [ ${INSTALL_MYSQL} = true ]; then \
+      docker-php-ext-install pdo_mysql; \
+  fi
 
 ###########################################
 # zip
@@ -117,12 +121,16 @@ RUN docker-php-ext-install mbstring;
 # GD
 ###########################################
 
-RUN docker-php-ext-configure gd \
+ARG INSTALL_GD=false
+
+RUN if [ ${INSTALL_GD} = true ]; then \
+      docker-php-ext-configure gd \
             --prefix=/usr \
             --with-jpeg \
             --with-webp \
             --with-freetype \
-    && docker-php-ext-install gd;
+      && docker-php-ext-install gd; \
+  fi
 
 ###########################################
 # OPcache
@@ -160,7 +168,7 @@ RUN if [ ${INSTALL_PCNTL} = true ]; then \
 # BCMath
 ###########################################
 
-ARG INSTALL_BCMATH=true
+ARG INSTALL_BCMATH=false
 
 RUN if [ ${INSTALL_BCMATH} = true ]; then \
       docker-php-ext-install bcmath; \
@@ -170,7 +178,7 @@ RUN if [ ${INSTALL_BCMATH} = true ]; then \
 # RDKAFKA
 ###########################################
 
-ARG INSTALL_RDKAFKA=true
+ARG INSTALL_RDKAFKA=false
 
 RUN if [ ${INSTALL_RDKAFKA} = true ]; then \
       apt-get install -yqq --no-install-recommends --show-progress librdkafka-dev \
@@ -217,7 +225,7 @@ RUN if [ ${INSTALL_MEMCACHED} = true ]; then \
 # MySQL Client
 ###########################################
 
-ARG INSTALL_MYSQL_CLIENT=true
+ARG INSTALL_MYSQL_CLIENT=false
 
 RUN if [ ${INSTALL_MYSQL_CLIENT} = true ]; then \
       apt-get install -yqq --no-install-recommends --show-progress default-mysql-client; \
